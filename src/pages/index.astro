@@ -1,15 +1,227 @@
 ---
+import Layout from '../layouts/Layout.astro';
+const w = 3;
+const arr = [];
+for (let x = 0; x < w; x++) {
+for (let y = 0; y < w; y++) {
+	arr.push({x,y});
+}
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Test">
+	<div id="the-big-boy" data-inverse data-state="none" style="margin: auto; width: 100vmin; height: 100vmin;">
+		{arr.map(({x, y}) => <div data-x={x} data-y={y} style={`display: inline-block; width: ${100/w}%; height: ${100/w}%; outline-style:dotted;`}></div>)}
+	</div>
+</Layout>
+
+<style>
+
+	div {
+		--target: red;
+		--other: blue;
+	}
+
+	div[data-inverse] {
+		--target: blue;
+		--other: red;
+	}
+
+	div > div {
+		background-color: white;
+	}
+
+	div[data-state="upper-c"] > div[data-x=0] {
+		background-color: var(--target);
+	}
+
+	div[data-state="upper-i"] > div[data-x=0] {
+		background-color: var(--other);
+	}
+
+	div[data-state="upper-i"] > div[data-x=0][data-y=1] {
+		background-color: var(--target);
+	}
+
+	div[data-state="center-c"] > div[data-x=1] {
+		background-color: var(--target);
+	}
+
+	div[data-state="center-i"] > div[data-x=1] {
+		background-color: var(--other);
+	}
+
+	div[data-state="center-i"] > div[data-x=1][data-y=1] {
+		background-color: var(--target);
+	}
+
+	div[data-state="lower-c"] > div[data-x=2] {
+		background-color: var(--target);
+	}
+
+	div[data-state="lower-i"] > div[data-x=2] {
+		background-color: var(--other);
+	}
+
+	div[data-state="lower-i"] > div[data-x=2][data-y=1] {
+		background-color: var(--target);
+	}
+
+	div > div::before {
+		display: inline-block;
+		content: "";
+		font-size: 12rem;
+		font-weight: bold;
+		position: absolute;
+		transform: translate(-50%, -50%);
+	}
+
+	div[data-state="hint-center"] > div[data-x=1][data-y=1]::before {
+		content: "✱";
+		top: 50%;
+		left: 50%;
+	}
+
+	div[data-state="hint-double"] > div[data-x=0][data-y=1]::before {
+		content: "✱";
+		top: 16.666666%;
+		left: 50%;
+	}
+
+	div[data-state="hint-double"] > div[data-x=2][data-y=1]::before {
+		content: "✱";
+		top: 86.666666%;
+		left: 50%;
+	}
+
+	div[data-state="hint-upper"] > div[data-x=0][data-y=1]::before {
+		content: "✱";
+		top: 16.666666%;
+		left: 50%;
+	}
+
+	div[data-state="hint-lower"] > div[data-x=2][data-y=1]::before {
+		content: "✱";
+		top: 86.666666%;
+		left: 50%;
+	}
+
+	
+</style>
+
+<script lang="ts">
+	function delay(ms) {
+		return new Promise((resolve, _) => {
+			setTimeout((_) => resolve(undefined), ms);
+		})
+	}
+
+	function set_state(state) {
+		document.getElementById("the-big-boy").dataset["state"] = state;
+	}
+
+	function begin_experiment() {
+		const is_inverse = (Math.random() * 2) > 1;
+
+		if (is_inverse)
+		{
+			document.getElementById("the-big-boy").dataset["inverse"] = true;
+		}
+		else
+		{
+			delete document.getElementById("the-big-boy").dataset["inverse"];
+		}
+	}
+
+	function complete_experiment(data) {
+		console.log(data);
+	}
+
+	async function loop_it() {
+		const h = Math.random() * 3;
+
+		if (h > 2) {
+			// Upper
+			const is_double = (Math.random() * 2) > 1;
+
+			if (is_double) {
+				set_state("hint-double");
+			}
+			else {
+				set_state("hint-upper");
+			}
+
+			await delay((Math.random() * 1500) + 1500);
+
+			const is_c = (Math.random() * 2) > 1;
+
+			begin_experiment();
+
+			if (is_c) {
+				set_state("upper-c");
+			}
+			else {
+				set_state("upper-i");
+			}
+
+			complete_experiment({name: "upper", is_c, is_double});
+		}
+		else if (h > 1) {
+			// Upper
+			
+			set_state("hint-center");
+
+			await delay((Math.random() * 1500) + 1500);
+
+			const is_c = (Math.random() * 2) > 1;
+
+			begin_experiment();
+
+			if (is_c) {
+				set_state("center-c");
+			}
+			else {
+				set_state("center-i");
+			}
+
+			complete_experiment({name: "center", is_c});
+		}
+		else {
+			// Lower
+
+			const is_double = (Math.random() * 2) > 1;
+
+			if (is_double) {
+				set_state("hint-double");
+			}
+			else {
+				set_state("hint-lower");
+			}
+
+			await delay((Math.random() * 1500) + 1500);
+
+			const is_c = (Math.random() * 2) > 1;
+
+			begin_experiment();
+
+			if (is_c) {
+				set_state("lower-c");
+			}
+			else {
+				set_state("lower-i");
+			}
+
+			complete_experiment({name: "lower", is_c, is_double});
+		}
+
+		start_loop();
+	}
+
+	function start_loop() {
+		setTimeout((_) => {
+			loop_it();
+		}, (Math.random() * 500) + 1000);
+	}
+
+	start_loop();
+</script>
