@@ -1,227 +1,339 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 const w = 3;
 const arr = [];
 for (let x = 0; x < w; x++) {
-for (let y = 0; y < w; y++) {
-	arr.push({x,y});
-}
+    for (let y = 0; y < w; y++) {
+        arr.push({ x, y });
+    }
 }
 ---
 
 <Layout title="Test">
-	<div id="the-big-boy" data-inverse data-state="none" style="margin: auto; width: 100vmin; height: 100vmin;">
-		{arr.map(({x, y}) => <div data-x={x} data-y={y} style={`display: inline-block; width: ${100/w}%; height: ${100/w}%; outline-style:dotted;`}></div>)}
-	</div>
+    <div
+        id="the-big-boy"
+        data-inverse
+        data-state="none"
+        style="margin: auto; width: 100vmin; height: 100vmin;"
+    >
+        {
+            arr.map(({ x, y }) => (
+                <div
+                    data-x={x}
+                    data-y={y}
+                    style={`display: inline-block; width: ${
+                        100 / w
+                    }%; height: ${100 / w}%;`}
+                />
+            ))
+        }
+    </div>
 </Layout>
 
 <style>
+    #the-big-boy {
+        --target: #ee7674;
+        --other: #9dbf9e;
+    }
 
-	div {
-		--target: red;
-		--other: blue;
-	}
+    #the-big-boy[data-inverse] {
+        --target: #9dbf9e;
+        --other: #ee7674;
+    }
 
-	div[data-inverse] {
-		--target: blue;
-		--other: red;
-	}
+    div > div {
+        background-color: transparent;
+    }
 
-	div > div {
-		background-color: white;
-	}
+    div[data-state="upper-c"] > div[data-x="0"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="upper-c"] > div[data-x=0] {
-		background-color: var(--target);
-	}
+    div[data-state="upper-i"] > div[data-x="0"] {
+        background-color: var(--other);
+    }
 
-	div[data-state="upper-i"] > div[data-x=0] {
-		background-color: var(--other);
-	}
+    div[data-state="upper-i"] > div[data-x="0"][data-y="1"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="upper-i"] > div[data-x=0][data-y=1] {
-		background-color: var(--target);
-	}
+    div[data-state="center-c"] > div[data-x="1"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="center-c"] > div[data-x=1] {
-		background-color: var(--target);
-	}
+    div[data-state="center-i"] > div[data-x="1"] {
+        background-color: var(--other);
+    }
 
-	div[data-state="center-i"] > div[data-x=1] {
-		background-color: var(--other);
-	}
+    div[data-state="center-i"] > div[data-x="1"][data-y="1"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="center-i"] > div[data-x=1][data-y=1] {
-		background-color: var(--target);
-	}
+    div[data-state="lower-c"] > div[data-x="2"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="lower-c"] > div[data-x=2] {
-		background-color: var(--target);
-	}
+    div[data-state="lower-i"] > div[data-x="2"] {
+        background-color: var(--other);
+    }
 
-	div[data-state="lower-i"] > div[data-x=2] {
-		background-color: var(--other);
-	}
+    div[data-state="lower-i"] > div[data-x="2"][data-y="1"] {
+        background-color: var(--target);
+    }
 
-	div[data-state="lower-i"] > div[data-x=2][data-y=1] {
-		background-color: var(--target);
-	}
+    div > div::before {
+        display: inline-block;
+        content: "";
+        font-size: 12rem;
+        font-weight: bold;
+        position: absolute;
+        transform: translate(-50%, -50%);
+    }
 
-	div > div::before {
-		display: inline-block;
-		content: "";
-		font-size: 12rem;
-		font-weight: bold;
-		position: absolute;
-		transform: translate(-50%, -50%);
-	}
+    div[data-state="hint-center"] > div[data-x="1"][data-y="1"]::before {
+        content: "✱";
+        top: 50%;
+        left: 50%;
+    }
 
-	div[data-state="hint-center"] > div[data-x=1][data-y=1]::before {
-		content: "✱";
-		top: 50%;
-		left: 50%;
-	}
+    div[data-state="hint-double"] > div[data-x="0"][data-y="1"]::before {
+        content: "✱";
+        top: 16.666666%;
+        left: 50%;
+    }
 
-	div[data-state="hint-double"] > div[data-x=0][data-y=1]::before {
-		content: "✱";
-		top: 16.666666%;
-		left: 50%;
-	}
+    div[data-state="hint-double"] > div[data-x="2"][data-y="1"]::before {
+        content: "✱";
+        top: 86.666666%;
+        left: 50%;
+    }
 
-	div[data-state="hint-double"] > div[data-x=2][data-y=1]::before {
-		content: "✱";
-		top: 86.666666%;
-		left: 50%;
-	}
+    div[data-state="hint-upper"] > div[data-x="0"][data-y="1"]::before {
+        content: "✱";
+        top: 16.666666%;
+        left: 50%;
+    }
 
-	div[data-state="hint-upper"] > div[data-x=0][data-y=1]::before {
-		content: "✱";
-		top: 16.666666%;
-		left: 50%;
-	}
-
-	div[data-state="hint-lower"] > div[data-x=2][data-y=1]::before {
-		content: "✱";
-		top: 86.666666%;
-		left: 50%;
-	}
-
-	
+    div[data-state="hint-lower"] > div[data-x="2"][data-y="1"]::before {
+        content: "✱";
+        top: 86.666666%;
+        left: 50%;
+    }
 </style>
 
 <script lang="ts">
-	function delay(ms) {
-		return new Promise((resolve, _) => {
-			setTimeout((_) => resolve(undefined), ms);
-		})
-	}
+const results = [];
+function record_result(d) {
+    console.log(d);
+    results.push(d);
+}
 
-	function set_state(state) {
-		document.getElementById("the-big-boy").dataset["state"] = state;
-	}
+function delay(ms) {
+    return new Promise((resolve, _) => {
+        setTimeout((_) => resolve(undefined), ms);
+    });
+}
 
-	function begin_experiment() {
-		const is_inverse = (Math.random() * 2) > 1;
+function set_state(state) {
+    document.getElementById("the-big-boy").dataset["state"] = state;
+}
 
-		if (is_inverse)
-		{
-			document.getElementById("the-big-boy").dataset["inverse"] = true;
-		}
-		else
-		{
-			delete document.getElementById("the-big-boy").dataset["inverse"];
-		}
-	}
+function begin_experiment() {
+    const is_inverse = Math.random() * 2 > 1;
 
-	function complete_experiment(data) {
-		console.log(data);
-	}
+    if (is_inverse) {
+        document.getElementById("the-big-boy").dataset["inverse"] = true;
+    } else {
+        delete document.getElementById("the-big-boy").dataset.inverse;
+    }
+}
 
-	async function loop_it() {
-		const h = Math.random() * 3;
+async function complete_experiment(data, start) {
+    const was_inverse =
+        !!document.getElementById("the-big-boy").dataset["inverse"];
 
-		if (h > 2) {
-			// Upper
-			const is_double = (Math.random() * 2) > 1;
+    const { was_left, diff } = await new Promise((resolve, _) => {
+        const callback = function (event) {
+            const end = performance.now();
+            const diff = end - start;
+            switch (event.code) {
+                case "KeyA":
+                case "ArrowLeft":
+                    resolve({ was_left: true, diff });
+                    break;
+                case "KeyD":
+                case "ArrowRight":
+                    resolve({ was_left: false, diff });
+                    break;
+            }
+        };
+        document.addEventListener("keydown", callback, true);
+    });
 
-			if (is_double) {
-				set_state("hint-double");
-			}
-			else {
-				set_state("hint-upper");
-			}
+    // By this logic red == right, blue == left
+    const was_correct = was_inverse === was_left;
 
-			await delay((Math.random() * 1500) + 1500);
+    await record_result({ ...data, was_correct, time: diff });
+}
 
-			const is_c = (Math.random() * 2) > 1;
+async function loop_it() {
+    const h = Math.random() * 3;
 
-			begin_experiment();
+    if (h > 2) {
+        // Upper
 
-			if (is_c) {
-				set_state("upper-c");
-			}
-			else {
-				set_state("upper-i");
-			}
+        const use_hint = Math.random() * 2 > 1;
+        const is_double = Math.random() * 2 > 1;
 
-			complete_experiment({name: "upper", is_c, is_double});
-		}
-		else if (h > 1) {
-			// Upper
-			
-			set_state("hint-center");
+        if (use_hint) {
+            if (is_double) {
+                set_state("hint-double");
+            } else {
+                set_state("hint-upper");
+            }
 
-			await delay((Math.random() * 1500) + 1500);
+            await delay(Math.random() * 1500 + 1500);
+        } else {
+            await delay(Math.random() * 1000);
+        }
 
-			const is_c = (Math.random() * 2) > 1;
+        const is_c = Math.random() * 2 > 1;
 
-			begin_experiment();
+        begin_experiment();
 
-			if (is_c) {
-				set_state("center-c");
-			}
-			else {
-				set_state("center-i");
-			}
+        if (is_c) {
+            set_state("upper-c");
+        } else {
+            set_state("upper-i");
+        }
+        const start = performance.now();
+        await complete_experiment(
+            { name: "upper", is_c, is_double, used_hint: use_hint },
+            start
+        );
+    } else if (h > 1) {
+        // Upper
+        const use_hint = Math.random() * 2 > 1;
 
-			complete_experiment({name: "center", is_c});
-		}
-		else {
-			// Lower
+        if (use_hint) {
+            set_state("hint-center");
 
-			const is_double = (Math.random() * 2) > 1;
+            await delay(Math.random() * 1500 + 1500);
+        } else {
+            await delay(Math.random() * 1000);
+        }
 
-			if (is_double) {
-				set_state("hint-double");
-			}
-			else {
-				set_state("hint-lower");
-			}
+        const is_c = Math.random() * 2 > 1;
 
-			await delay((Math.random() * 1500) + 1500);
+        begin_experiment();
 
-			const is_c = (Math.random() * 2) > 1;
+        if (is_c) {
+            set_state("center-c");
+        } else {
+            set_state("center-i");
+        }
 
-			begin_experiment();
+        const start = performance.now();
+        await complete_experiment(
+            { name: "center", is_c, used_hint: use_hint },
+            start
+        );
+    } else {
+        // Lower
 
-			if (is_c) {
-				set_state("lower-c");
-			}
-			else {
-				set_state("lower-i");
-			}
+        const use_hint = Math.random() * 2 > 1;
+        const is_double = Math.random() * 2 > 1;
 
-			complete_experiment({name: "lower", is_c, is_double});
-		}
+        if (use_hint) {
+            if (is_double) {
+                set_state("hint-double");
+            } else {
+                set_state("hint-lower");
+            }
 
-		start_loop();
-	}
+            await delay(Math.random() * 1500 + 1500);
+        } else {
+            await delay(Math.random() * 1000);
+        }
 
-	function start_loop() {
-		setTimeout((_) => {
-			loop_it();
-		}, (Math.random() * 500) + 1000);
-	}
+        const is_c = Math.random() * 2 > 1;
 
-	start_loop();
+        begin_experiment();
+
+        if (is_c) {
+            set_state("lower-c");
+        } else {
+            set_state("lower-i");
+        }
+
+        const start = performance.now();
+        await complete_experiment(
+            { name: "lower", is_c, is_double, used_hint: use_hint },
+            start
+        );
+    }
+
+    console.log("reset");
+    set_state("none");
+
+    if (performance.now() > 60000) {
+        end_loop();
+    } else {
+        start_loop();
+    }
+}
+
+function end_loop() {
+    console.log(results);
+
+    console.log(
+        "Accuracy:",
+        results.filter((e) => e.was_correct).length / results.length
+    );
+    console.log("avg RT:", average(results.map((e) => e.time)));
+    console.log(
+        "Alerting:",
+        average(results.filter((e) => !e.used_hint).map((e) => e.time)) -
+        average(
+            results
+                .filter((e) => e.used_hint && e.is_double)
+                .map((e) => e.time)
+        )
+    );
+    console.log(
+        "Orienting:",
+        average(
+            results
+                .filter((e) => e.used_hint && e.name === "center")
+                .map((e) => e.time)
+        ) -
+        average(
+            results
+                .filter(
+                    (e) =>
+                        e.used_hint &&
+                        (e.name === "lower" || e.name === "upper") &&
+                        !e.is_double
+                )
+                .map((e) => e.time)
+        )
+    );
+    console.log(
+        "Conflict:",
+        average(results.filter((e) => !e.is_c).map((e) => e.time)) -
+        average(results.filter((e) => e.is_c).map((e) => e.time))
+    );
+}
+
+function average(arr) {
+    return arr.reduce((a, b) => a + b, 0) / arr.length;
+}
+
+function start_loop() {
+    setTimeout((_) => {
+        loop_it();
+    }, Math.random() * 500 + 1000);
+}
+
+start_loop();
 </script>
